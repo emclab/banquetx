@@ -1,0 +1,67 @@
+<% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+  <% else %>
+<div id="main_body">
+<div class="container">
+  <div class="page-header clearfix">
+      <div class="pull-left">
+        <h2><%=@title%></h2>
+      </div>
+    </div>
+ <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+         <b><%= t('Banquet Time') %></b>
+    </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+         <%= @banquet.banquet_date.strftime('%Y/%m/%d') %>@<%=@banquet.banquet_time%>
+    </div>
+ </div>
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+             <b><%= t('Host') %></b>
+    </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+           <%= @banquet.host.name %>
+    </div>
+ </div>
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+         <b><%= t('About') %></b>
+    </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+           <%= @banquet.about %>
+    </div>
+ </div>
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+          <b><%= t('Atendee') %></b>
+     </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+            <%= @banquet.number_of_atendee %>
+    </div>
+ </div>
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+           <b><%= t('Note') %></b>
+    </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+           <%= @banquet.note %>
+    </div>
+ </div>
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+            <b><%= t('Last Updated By') %></b>
+    </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+            <%= @banquet.last_updated_by.name %>
+    </div>
+ </div>
+  
+   <div class="btn-toolbar">
+     <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
+    </div>  
+ </div>
+	
+</div>
+<% end %>

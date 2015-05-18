@@ -1,0 +1,37 @@
+<% if @view_in_config && @erb_code  %>
+  <%= render inline: @erb_code %>
+  
+  <% else %>
+<div class="container">
+  <div class="page-header clearfix">
+    <div class="pull-left">
+    <h2><%=@title%></h2>
+    </div>
+  </div>
+<%= simple_form_for @menu, html: { class: 'form-horizontal col-sm-' + BUTTONS_CLS['form-span#'] },
+    wrapper: :horizontal_form,
+    wrapper_mappings: {
+    check_boxes: :horizontal_radio_and_checkboxes,
+    radio_buttons: :horizontal_radio_and_checkboxes,
+    file: :horizontal_file_input,
+    boolean: :horizontal_boolean
+  } do |f| %>
+  
+    <div class="form-inputs">  
+      <%= f.input :category_name, :label => t('Dish Category'), collection: Commonx::CommonxHelper.return_misc_definitions('base_part_category') %>
+	  <%= f.input :course_id, :label => t('Dish Name'), collection: Banquetx.banquet_course_class.where(:available => true).order('category_id'), include_blank: true %>
+	  <%= f.input :qty, :label => t('Qty') %>
+	  <%= f.input :brief_note, :label => t('Note') %>
+	  
+	  <div class="btn-toolbar">
+            <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+            <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>    
+      </div> 
+
+  </div>
+ 
+<% end %>
+
+</div>
+<% end%>
+

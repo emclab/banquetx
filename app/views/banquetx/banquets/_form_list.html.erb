@@ -1,0 +1,56 @@
+ <% if @view_in_config && @erb_code %>
+  <%= render inline: ERB.new(@erb_code).result(binding) %>
+  
+  <% else %>
+<div class="pagination"><%= will_paginate models %></div>
+<div class="container-fluid">
+        <div class="page-header clearfix">
+          <div class="pull-left">
+            <h2><%=@title%></h2>
+          </div>
+        </div>
+      <table class="table table-hover">
+              <thead>
+		<tr>
+			<th>#</th>
+			<th><%= t('Date') %></th>
+			<th><%= t('Host') %></th>
+			<th><%= t('# of Atendee') %></th>
+            <th><%= t('# of Dishes') %></th>
+			<th><%= t('About') %></th>
+			<th></th>
+            <th></th>
+	  	</tr>
+                </thead>
+                <tbody>
+		<% models.each do |r| %>
+		  <tr>
+		  	<% if has_action_right?('show', params[:controller], r) %>
+		  	  <td><%= link_to r.id, SUBURI + "/view_handler?index=1&url=#{banquet_path(r)}"  %></td>
+		  	<% else %>
+		  	  <td><%= r.id %></td>
+		  	<% end %>
+		  	<td><%= prt(r, :banquet_date).strftime('%Y/%m/%d') %>:<%=prt(r, :banquet_time)%></td>
+		  	<td><%= prt(r, 'host.name') %></td> 
+			<td><%= prt(r, :number_of_atendee) %></td> 
+			<td><%= Banquetx::Menu.where(banquet_id: r.id).count %></td>
+			<td><%= prt(r, :about) %></td>
+			<%  if has_action_right?('index', 'banquetx_menus') %> 
+			  <td><%= link_to t('Menu'), SUBURI + "/view_handler?index=1&url=#{CGI::escape menus_path(banquet_id: r.id, parent_record_id: r.id, parent_resource: params[:controller])}", :class => BUTTONS_CLS['action'] %></td>
+			<% end %>
+			<%  if has_action_right?('update', params[:controller], r) %>   
+              <td><%= link_to t('Edit'), SUBURI + "/view_handler?index=1&url=#{CGI::escape edit_banquet_path(r)}", :class => BUTTONS_CLS['action'] %></td>
+            <% end %>
+		  </tr>
+		<% end %>
+	    </tbody>
+       </table>
+	
+	<div class="btn-toolbar">
+	   	<%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
+	    <%= link_to t('New Banquet'), SUBURI + "/view_handler?index=1&url=#{CGI.escape new_banquet_path()}", :class => BUTTONS_CLS['action']  if has_action_right?('create', params[:controller]) %>
+	</div>
+</div>
+	
+<% end %>
+	

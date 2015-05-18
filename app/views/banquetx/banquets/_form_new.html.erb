@@ -1,0 +1,39 @@
+<% if @view_in_config && @erb_code  %>
+  <%= render inline: @erb_code %>
+  
+  <% else %>
+<div class="container">
+  <div class="page-header clearfix">
+    <div class="pull-left">
+    <h2><%=@title%></h2>
+    </div>
+  </div>
+<%= simple_form_for @banquet, html: { class: 'form-horizontal col-sm-' + BUTTONS_CLS['form-span#'] },
+    wrapper: :horizontal_form,
+    wrapper_mappings: {
+    check_boxes: :horizontal_radio_and_checkboxes,
+    radio_buttons: :horizontal_radio_and_checkboxes,
+    file: :horizontal_file_input,
+    boolean: :horizontal_boolean
+  } do |f| %>
+  
+    <div class="form-inputs">  
+	  <%= f.input :banquet_date, :label => t('Date'), :as => :string %>
+	  <%= f.input :banquet_time, :label => t('Time'), :collection => Authentify::AuthentifyUtility.find_config_const('time_interval', 'banquetx').split(',').map(&:strip), include_blank: true %>
+	  <%= f.input :host_id, :label => t('Host'), :collection => Authentify::User.joins(:user_levels => :sys_user_group).where.not('authentify_sys_user_groups.user_group_name = ?', 'admin'), :include_blank => true %>
+	  <%= f.input :about, :label => t('About') %>
+	  <%= f.input :number_of_atendee, :label => t('Atendee#') %>
+	  <%= f.input :note, :label => t('Note'), :input_html => {:rows => 3} %>
+	  
+	  <div class="btn-toolbar" >
+            <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action'] %>
+            <%= f.button :submit, t('Save'), :class => BUTTONS_CLS['action'] %>    
+      </div> 
+
+  </div>
+ 
+<% end %>
+
+</div>
+<% end%>
+
