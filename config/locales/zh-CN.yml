@@ -41,6 +41,8 @@ zh-CN:
   Delete  : '删除'
   Couse Search : '菜品搜索'
   New Dish : '新菜品'
+  Update Dish : '更新菜品'
+  Dish Info : '菜品信息'
   Good for : '多人份'
   Good For : '多人份'
   Edit : '编辑'
@@ -51,3 +53,5 @@ zh-CN:
   Duplicate Time! : '时间相重！'
   Duplidate Dish Course! : '菜品相重！'
   Duplicate Eval! : '不可重复投票！'
+  Dishes : '菜品一览'
+  

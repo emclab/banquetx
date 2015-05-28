@@ -70,7 +70,7 @@ module Banquetx
         b =  FactoryGirl.create(:banquetx_banquet)
         task = FactoryGirl.attributes_for(:banquetx_menu, banquet_id: b.id )  
         get 'create', {:menu => task}
-        expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Saved!")
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Saved!")
       end
       
       it "should render 'new' if data error" do        
@@ -103,7 +103,7 @@ module Banquetx
         session[:user_id] = @u.id
         task = FactoryGirl.create(:banquetx_menu)
         get 'update', {:id => task.id, :menu => {:qty => 2}}
-        expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Updated!")
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
       end
       
       it "should render edit with data error" do
@@ -135,7 +135,7 @@ module Banquetx
         session[:user_id] = @u.id
         task = FactoryGirl.create(:banquetx_menu, :last_updated_by_id => @u.id)
         get 'destroy', {:id => task.id}
-        expect(response).to redirect_to URI.escape(SUBURI + "/authentify/view_handler?index=0&msg=Successfully Deleted!")
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Deleted!")
        end
      end
 

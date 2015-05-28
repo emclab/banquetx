@@ -104,10 +104,11 @@ RSpec.describe "LinkTests", type: :request do
       click_link 'New Banquet'
       fill_in 'banquet_banquet_date', :with => '2018/05/10'
       select('8:00AM', from: 'banquet_banquet_time')
+      select('Test User', from: 'banquet_host_id')
       click_button 'Save'
       save_and_open_page
       visit banquetx.banquets_path
-      expect(page).not_to have_content('2018/05/10')
+      expect(page).to have_content('2018/05/10')
       #bad data
       visit banquetx.banquets_path
       click_link 'New Banquet'
