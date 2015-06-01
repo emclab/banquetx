@@ -26,6 +26,16 @@ RSpec.describe "LinkTests", type: :request do
          'form-span#'         => '4'
         }
     before(:each) do
+      wf = "def submit
+          wf_common_action('initial_state', 'acknowledging', 'submit')
+        end   
+        def acknowledge
+          wf_common_action('acknowledging', 'acknowledged', 'acknowledge')
+        end    "
+      FactoryGirl.create(:engine_config, :engine_name => 'banquetx', :engine_version => nil, :argument_name => 'banquet_wf_action_def', :argument_value => wf)
+      FactoryGirl.create(:engine_config, :engine_name => 'banquetx', :engine_version => nil, :argument_name => 'banquet_wf_final_state_string', :argument_value => 'acknowledged')
+      FactoryGirl.create(:engine_config, :engine_name => '', :engine_version => nil, :argument_name => 'wf_pdef_in_config', :argument_value => 'true')
+      FactoryGirl.create(:engine_config, :engine_name => '', :engine_version => nil, :argument_name => 'wf_validate_in_config', :argument_value => 'true')
       @pagination_config = FactoryGirl.create(:engine_config, :engine_name => nil, :engine_version => nil, :argument_name => 'pagination', :argument_value => 30)
       time_int = FactoryGirl.create(:engine_config, :engine_name => 'banquetx', :engine_version => nil, :argument_name => 'time_interval', :argument_value => "8:00AM, 9:30PM,4:00PM")
       z = FactoryGirl.create(:zone, :zone_name => 'hq')
@@ -41,6 +51,12 @@ RSpec.describe "LinkTests", type: :request do
       user_access = FactoryGirl.create(:user_access, :action => 'create', :resource => 'banquetx_banquets', :role_definition_id => @role.id, :rank => 1,
                                        :sql_code => "")
       user_access = FactoryGirl.create(:user_access, :action => 'update', :resource => 'banquetx_banquets', :role_definition_id => @role.id, :rank => 1,
+                                       :sql_code => "")
+      user_access = FactoryGirl.create(:user_access, :action => 'event_action', :resource => 'banquetx_banquets', :role_definition_id => @role.id, :rank => 1,
+                                       :sql_code => "")
+      user_access = FactoryGirl.create(:user_access, :action => 'submit', :resource => 'banquetx_banquets', :role_definition_id => @role.id, :rank => 1,
+                                       :sql_code => "")
+      user_access = FactoryGirl.create(:user_access, :action => 'acknowledge', :resource => 'banquetx_banquets', :role_definition_id => @role.id, :rank => 1,
                                        :sql_code => "")
       user_access = FactoryGirl.create(:user_access, :action => 'show', :resource => 'banquetx_banquets', :role_definition_id => @role.id, :rank => 1,
                                        :sql_code => "record.last_updated_by_id == session[:user_id]")
@@ -106,7 +122,6 @@ RSpec.describe "LinkTests", type: :request do
       select('8:00AM', from: 'banquet_banquet_time')
       select('Test User', from: 'banquet_host_id')
       click_button 'Save'
-      save_and_open_page
       visit banquetx.banquets_path
       expect(page).to have_content('2018/05/10')
       #bad data
@@ -124,6 +139,29 @@ RSpec.describe "LinkTests", type: :request do
       #save_and_open_page
       expect(page).to have_content('Banquet Info')
            
+    end
+    
+    it "works for banquet workflow" do
+      task = FactoryGirl.create(:banquetx_banquet, cancelled: false, :last_updated_by_id => @u.id, banquet_time: '4:00PM', wf_state: 'initial_state')
+      course = FactoryGirl.create(:banquet_coursex_course, :name => 'dish name')
+      menu = FactoryGirl.create(:banquetx_menu, banquet_id: task.id, course_id: course.id)
+      visit banquetx.banquets_path
+      #save_and_open_page
+      click_link 'Submit Banquet'
+      fill_in 'banquet_wf_comment', with: 'test submission!'
+      click_button 'Save'
+      visit banquetx.banquets_path
+      click_link task.id.to_s
+      #save_and_open_page
+      expect(page).to have_content('test submission!')
+      visit banquetx.banquets_path
+      click_link 'Acknowledge'
+      fill_in 'banquet_wf_comment', with: 'I acknowledge the banquet request!'
+      click_button 'Save'
+      visit banquetx.banquets_path
+      click_link task.id.to_s
+      expect(page).to have_content('I acknowledge the banquet request!')
+      
     end
     
   end

@@ -2,7 +2,7 @@
   <%= render inline: ERB.new(@erb_code).result(binding) %>
   
   <% else %>
-<div id="main_body">
+
 <div class="container">
   <div class="page-header clearfix">
       <div class="pull-left">
@@ -57,11 +57,32 @@
             <%= @banquet.last_updated_by.name %>
     </div>
  </div>
-  
+ <% if @banquet.wf_state.present? %>
+   <div class="row">
+     <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+       <b><%=t('Workflow History')%>:</b>
+    </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+        <% StateMachineLogx::Log.where('resource_id = ? AND resource_string = ?', @banquet.id, params[:controller]).order('created_at DESC').each do |t| %>
+             <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t(t.action_by_name.humanize.titleize) %>,&nbsp; <%=t(t.from.humanize.titleize)%>,&nbsp; <%=t(t.event.humanize.titleize) %>,&nbsp; <%=t(t.to.humanize.titleize)%>,&nbsp;<%= t.comment %> </li>
+       <% end %>
+      </div>
+   </div>
+  <% end %>	
+  <div class="row">
+    <div class="col-sm-<%=BUTTONS_CLS['left-span#']%> form-group">
+       <b>LOG</b>
+     </div>
+    <div class="col-sm-<%=BUTTONS_CLS['right-span#']%> form-group">
+        <% Commonx::Log.where('resource_id = ? AND resource_name = ?', @banquet.id, params[:controller].sub('/', '_')).order("created_at DESC").each do |t| %>
+             <li><%= t.created_at.strftime("%Y/%m/%d") %>,&nbsp; <%= t.last_updated_by.name %>,&nbsp; <%= t.log %> </li>
+        <% end %>
+   </div>
+ </div> 
    <div class="btn-toolbar">
      <%= link_to t('Back'), SUBURI + "/view_handler?index=0", :id => 'close', :class => BUTTONS_CLS['action'] %>
+     <%= link_to t('Delete'), banquet_path(@banquet), :method => :delete, data: {:confirm => I18n.t('Delete the record?')}, :class => BUTTONS_CLS['action'] if has_action_right?('destroy', params[:controller], @banquet) %>
     </div>  
- </div>
 	
 </div>
 <% end %>

@@ -68,9 +68,9 @@ module Banquetx
         session[:user_id] = @u.id
         task = FactoryGirl.attributes_for(:banquetx_banquet, :category_id => @cate.id )  
         get 'create', {:banquet => task, :category_id => @cate.id}
-        #expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=1&url=#{menus_path(banquet_id: banquet.id)}&msg=Successfully Saved!")
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=1&url=#{menus_path(banquet_id: Banquet.last.id)}&msg=Successfully Saved!")
         #expect(flash[:notice]).to eq('Successfully Saved!')
-        expect(response).to be_success
+        #expect(response).to be_success
       end
       
       it "should render 'new' if data error" do        
@@ -87,11 +87,19 @@ module Banquetx
       it "returns edit page" do
         user_access = FactoryGirl.create(:user_access, :action => 'update', :resource => 'banquetx_banquets', :role_definition_id => @role.id, :rank => 1,
         :sql_code => "")
-        session[:user_id] = @u.id
-        
+        session[:user_id] = @u.id       
         task = FactoryGirl.create(:banquetx_banquet, :category_id => @cate.id)
         get 'edit', {:id => task.id}
         expect(response).to be_success
+      end
+      
+      it "should not update after initial_state" do
+        user_access = FactoryGirl.create(:user_access, :action => 'update', :resource => 'banquetx_banquets', :role_definition_id => @role.id, :rank => 1,
+        :sql_code => "")
+        session[:user_id] = @u.id       
+        task = FactoryGirl.create(:banquetx_banquet, :category_id => @cate.id, :wf_state => 'acknowledging')
+        get 'edit', {:id => task.id}
+        expect(response).to redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=NO Update. Record Being Processed!")
       end
       
     end

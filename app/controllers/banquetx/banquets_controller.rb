@@ -10,6 +10,7 @@ module Banquetx
       @banquets = params[:banquetx_banquets][:model_ar_r]  #returned by check_access_right
       @banquets = @banquets.where(category_id: @category_id) if @category_id
       @banquets = @banquets.where(host_id: @host.id) if @host
+      @banquets = @banquets.where(booked_by_id: @booker.id) if @booker
       @banquets = @banquets.page(params[:page]).per_page(@max_pagination) 
       @erb_code = find_config_const('banquet_index_view', 'banquetx')
     end
@@ -37,17 +38,22 @@ module Banquetx
       @title = t('Update Banquet')
       @banquet = Banquetx::Banquet.find_by_id(params[:id])
       @erb_code = find_config_const('banquet_edit_view', 'banquetx')
+      if @banquet.wf_state.present? && @banquet.current_state != :initial_state
+        redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=NO Update. Record Being Processed!")
+      end
     end
   
     def update
       @banquet = Banquetx::Banquet.find_by_id(params[:id])
-      @banquet.last_updated_by_id = session[:user_id]
-      if @banquet.update_attributes(edit_params)
-        redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
-      else
-        @erb_code = find_config_const('banquet_edit_view', 'banquetx')
-        flash[:notice] = t('Data Error. Not Updated!')
-        render 'edit'
+      if @banquet.wf_state.blank? || @banquet.current_state == :initial_state
+        @banquet.last_updated_by_id = session[:user_id]
+        if @banquet.update_attributes(edit_params)
+          redirect_to URI.escape(SUBURI + "/view_handler?index=0&msg=Successfully Updated!")
+        else
+          @erb_code = find_config_const('banquet_edit_view', 'banquetx')
+          flash[:notice] = t('Data Error. Not Updated!')
+          render 'edit'
+        end
       end
     end
   
@@ -67,6 +73,7 @@ module Banquetx
     def load_records
       @host = Authentify::User.find_by_id(params[:host_id].to_i) if params[:host_id].present?
       @host = Authentify::User.find_by_id(Banquetx::Banquet.find_by_id(params[:id].to_i).host_id) if params[:id].present?
+      @booker = Authentify::User.find_by_id(params[:booked_by_id].to_i) if params[:booked_by_id].present?
       @category_id = params[:category_id].to_i if params[:category_id].present?
     end
     

@@ -16,7 +16,8 @@
 			<th><%= t('Date') %></th>
 			<th><%= t('Host') %></th>
 			<th><%= t('# of Atendee') %></th>
-            <th><%= t('# of Dishes') %></th>
+            <th><%= t('WF State') %></th>
+			<th><%= t('# of Dishes') %></th>
 			<th><%= t('About') %></th>
 			<th></th>
             <th></th>
@@ -32,9 +33,16 @@
 		  	<% end %>
 		  	<td><%= prt(r, :banquet_date).strftime('%Y/%m/%d') %>:<%=prt(r, :banquet_time)%></td>
 		  	<td><%= prt(r, 'host.name') %></td> 
-			<td><%= prt(r, :number_of_atendee) %></td> 
+			<td><%= prt(r, :number_of_atendee) %></td>
+			<td><%= t(r.wf_state.humanize.titleize) if r.wf_state.present? %></td>
 			<td><%= Banquetx::Menu.where(banquet_id: r.id).count %></td>
 			<td><%= prt(r, :about) %></td>
+			<% if r.wf_state.present? && r.wf_state == 'initial_state' && has_action_right?('submit', params[:controller], r) %>
+   			   <td><%= link_to t('Submit Banquet'), SUBURI + "/view_handler?index=1&url=#{CGI.escape event_action_banquet_path(r, :wf_event => 'submit', :resource_id => r.id, :resource_string => params[:controller])}", :class => BUTTONS_CLS['action']  %></td>
+            <% end %>
+            <%  if r.wf_state.present? && r.wf_state == 'acknowledging' && has_action_right?('acknowledge', params[:controller], r) %>
+			   <td><%= link_to t('Acknowledge'), SUBURI + "/view_handler?index=1&url=#{CGI.escape event_action_banquet_path(r, :wf_event => 'acknowledge', :resource_id => r.id, :resource_string => params[:controller])}", :class => BUTTONS_CLS['action'] %></td>
+            <% end %>
 			<%  if has_action_right?('index', 'banquetx_menus') %> 
 			  <td><%= link_to t('Menu'), SUBURI + "/view_handler?index=1&url=#{CGI::escape menus_path(banquet_id: r.id, parent_record_id: r.id, parent_resource: params[:controller])}", :class => BUTTONS_CLS['action'] %></td>
 			<% end %>

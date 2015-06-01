@@ -24,3 +24,6 @@ gem 'authentify', :path => '../authentify'  #for rspec test
 gem 'commonx', :path => '../commonx'
 gem 'searchx', :path => '../searchx'
 gem 'banquet_coursex', :path => '../banquet_coursex'
+gem 'state_machine_logx', :path => '../state_machine_logx', branch: '4.2.0'
+gem 'biz_workflowx', :path => '../biz_workflowx', branch: '4.2.0'
+
