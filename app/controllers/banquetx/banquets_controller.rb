@@ -81,13 +81,13 @@ module Banquetx
     
     def new_params
       params.require(:banquet).permit(:banquet_date, :banquet_time, :host_id, :number_of_atendee, :about, :note, :about_atendee, :drink, :less_sodium,
-                     :less_fat, :avoid_certain_food, :wf_state, :how_many_table)
+                     :less_fat, :avoid_certain_food, :wf_state, :how_many_table, :est_cost)
     end
 
     def edit_params
       params.require(:banquet).permit(:banquet_date, :banquet_time, :host_id, :number_of_atendee, :about, :note, :about_atendee, :drink, :less_sodium,
                      :less_fat, :avoid_certain_food, :wf_state, :kitchen_replied, :kitchen_replied_time, :replied_by_id, :approved, :approved_time,
-                     :approved_by_id, :feedback, :star_rating, :how_many_table, :cancelled)
+                     :approved_by_id, :feedback, :star_rating, :how_many_table, :cancelled, :est_cost)
     end
 
   end

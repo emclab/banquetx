@@ -5,7 +5,10 @@ class CreateAuthentifyGroupTypes < ActiveRecord::Migration
       t.string :name
       t.timestamps
       t.string :brief_note
+      t.string :resource_string
       
     end
+    
+    add_index :authentify_group_types, :name 
   end
 end

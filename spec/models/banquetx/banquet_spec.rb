@@ -22,6 +22,11 @@ module Banquetx
       expect(c).not_to be_valid
     end
     
+    it "should reject 0 est_cost" do
+      c = FactoryGirl.build(:banquetx_banquet, :est_cost => 0)
+      expect(c).not_to be_valid
+    end
+
     it "should take nil category_id" do
       c = FactoryGirl.build(:banquetx_banquet, :category_id => nil)
       expect(c).to be_valid

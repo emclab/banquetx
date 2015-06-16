@@ -26,6 +26,7 @@ class CreateBanquetxBanquets < ActiveRecord::Migration
       t.integer :how_many_table
       t.integer :category_id
       t.integer :booked_by_id
+      t.integer :est_cost
 
       t.timestamps null: false
     end
