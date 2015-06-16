@@ -17,7 +17,7 @@ class CreateBanquetCoursexCourses < ActiveRecord::Migration
       t.string :image_location
       t.float :star_rating
       t.string :wf_state
-      t.integer :est_cost
+      t.integer :cost
 
       t.timestamps null: false
     end

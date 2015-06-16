@@ -33,7 +33,7 @@ module Banquetx
     validates :replied_by_id, :numericality => {:greater_than => 0, :only_integer => true}, :if => 'replied_by_id.present?'        
     validates :approved_by_id, :numericality => {:greater_than => 0, :only_integer => true}, :if => 'approved_by_id.present?'  
     validates :category_id, :numericality => {:greater_than => 0, :only_integer => true}, :if => 'category_id.present?'       
-    validates :est_cost, :numericality => {:greater_than => 0, :only_integer => true}, :if => 'est_cost.present?'       
+    validates :cost, :numericality => {:greater_than => 0, :only_integer => true}, :if => 'cost.present?'       
     validate :dynamic_validate 
     validate :validate_wf_input_data, :if => 'wf_state.present?' 
     
