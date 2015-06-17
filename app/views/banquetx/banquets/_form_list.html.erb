@@ -15,7 +15,7 @@
 			<th>#</th>
 			<th><%= t('Date') %></th>
 			<th><%= t('Host') %></th>
-			<th><%= t('# of Atendee') %></th>
+			<th><%= t('# of Attendee') %></th>
             <th><%= t('WF State') %></th>
 			<th><%= t('# of Dishes') %></th>
 			<th><%= t('About') %></th>
@@ -33,7 +33,7 @@
 		  	<% end %>
 		  	<td><%= prt(r, :banquet_date).strftime('%Y/%m/%d') %>:<%=prt(r, :banquet_time)%></td>
 		  	<td><%= prt(r, 'host.name') %></td> 
-			<td><%= prt(r, :number_of_atendee) %></td>
+			<td><%= prt(r, :number_of_attendee) %></td>
 			<td><%= t(r.wf_state.humanize.titleize) if r.wf_state.present? %></td>
 			<td><%= Banquetx::Menu.where(banquet_id: r.id).count %></td>
 			<td><%= prt(r, :about) %></td>

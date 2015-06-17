@@ -5,10 +5,10 @@ class CreateBanquetxBanquets < ActiveRecord::Migration
       t.string :banquet_time
       t.integer :host_id
       t.integer :last_updated_by_id
-      t.integer :number_of_atendee
+      t.integer :number_of_attendee
       t.string :about
       t.text :note
-      t.string :about_atendee
+      t.string :about_attendee
       t.boolean :drink
       t.boolean :less_sodium
       t.boolean :less_fat

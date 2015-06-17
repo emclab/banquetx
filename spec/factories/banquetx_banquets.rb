@@ -4,10 +4,10 @@ FactoryGirl.define do
     banquet_time "MyString"
     host_id 1
     last_updated_by_id 1
-    number_of_atendee 1
+    number_of_attendee 1
     about "MyString"
     note "MyText"
-    about_atendee "MyString"
+    about_attendee "MyString"
     drink false
     less_sodium false
     less_fat false

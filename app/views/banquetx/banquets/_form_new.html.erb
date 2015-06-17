@@ -22,7 +22,7 @@
 	  <%= f.input :banquet_time, :label => t('Time'), :collection => Authentify::AuthentifyUtility.find_config_const('time_interval', 'banquetx').split(',').map(&:strip), include_blank: true %>
 	  <%= f.input :host_id, :label => t('Host'), :collection => Authentify::User.joins(:user_levels => :sys_user_group).where.not('authentify_sys_user_groups.user_group_name = ?', 'admin'), :include_blank => true %>
 	  <%= f.input :about, :label => t('About') %>
-	  <%= f.input :number_of_atendee, :label => t('Atendee#') %>
+	  <%= f.input :number_of_attendee, :label => t('Attendee#') %>
 	  <%= f.input :note, :label => t('Note'), :input_html => {:rows => 3} %>
 	  
 	  <div class="btn-toolbar" >
