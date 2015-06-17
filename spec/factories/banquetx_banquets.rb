@@ -7,7 +7,7 @@ FactoryGirl.define do
     number_of_attendee 1
     about "MyString"
     note "MyText"
-    about_attendee "MyString"
+    about_guest "MyString"
     drink false
     less_sodium false
     less_fat false

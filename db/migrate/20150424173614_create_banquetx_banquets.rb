@@ -8,7 +8,7 @@ class CreateBanquetxBanquets < ActiveRecord::Migration
       t.integer :number_of_attendee
       t.string :about
       t.text :note
-      t.string :about_attendee
+      t.string :about_guest
       t.boolean :drink
       t.boolean :less_sodium
       t.boolean :less_fat
