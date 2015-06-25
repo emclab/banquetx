@@ -1,6 +1,6 @@
 module Banquetx
   class Menu < ActiveRecord::Base
-    attr_accessor :course_name, :last_updated_by_name, :category_name
+    attr_accessor :course_name, :last_updated_by_name, :category_name, :field_changed
     
     belongs_to :last_updated_by, :class_name => 'Authentify::User'
     belongs_to :course, :class_name => Banquetx.banquet_course_class.to_s

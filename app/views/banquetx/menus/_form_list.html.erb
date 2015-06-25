@@ -40,7 +40,7 @@
 	
 	<div class="btn-toolbar">
 	   	<%= link_to t('Back'), SUBURI + "/view_handler?index=0", :class => BUTTONS_CLS['action']  %>
-	    <%= link_to t('Add Dish'), SUBURI + "/view_handler?index=1&url=#{CGI.escape new_menu_path(banquet_id: @banquet.id)}", :class => BUTTONS_CLS['action']  if @banquet && has_action_right?('create', params[:controller]) %>
+	    <%= link_to t('Add Dish'), SUBURI + "/view_handler?index=1&url=#{CGI.escape new_menu_path(banquet_id: @banquet.id, parent_record_id: @banquet.id, parent_resource: 'banquetx/banquets')}", :class => BUTTONS_CLS['action']  if @banquet && has_action_right?('create', params[:controller], @banquet) %>
 	</div>
 </div>
 	

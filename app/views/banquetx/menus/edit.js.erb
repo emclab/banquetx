@@ -5,13 +5,17 @@
 <% if params[:menu][:field_changed] == 'course_category' && params[:menu].key?(:category_name) && params[:menu][:category_name].present?  %>
   $('#menu_course_id').empty();
   $('#menu_course_id').append('<option value=""></option>');
-  <% Banquetx.banquet_course_class.find_by_id(params[:menu][:category_name].to_i).each do |r| %>
+  <% Banquetx.banquet_course_class.where(category_id: params[:menu][:category_name].to_i, available: true).each do |r| %>
     $('#menu_course_id').append('<option value="<%=r.id%>"><%= "#{r.name}" %></option>');
   <% end %>
   $('#menu_field_changed').val('');
 <% elsif params[:menu][:field_changed] == 'course_category' && params[:menu].key?(:category_name) %>
   $('#menu_course_id').empty();
   $('#menu_field_changed').val('');
+  $('#menu_course_id').append('<option value=""><%= "" %></option>');
+  <% Banquetx.banquet_course_class.where(available: true).each do |r| %>
+     $('#menu_course_id').append('<option value="<%=r.id%>"><%= "#{r.name}" %></option>');
+  <% end %>
 <% end %>
 
 

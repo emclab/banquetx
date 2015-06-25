@@ -18,7 +18,7 @@ module Banquetx
       @title = t('New Dish')
       @menu = Banquetx::Menu.new()
       @erb_code = find_config_const('menu_new_view', 'banquetx')
-      @js_erb_code = find_config_const('menu_new_js_view', 'banquetx')
+      #@js_erb_code = find_config_const('menu_new_js_view', 'banquetx')
     end
   
     def create
@@ -39,7 +39,7 @@ module Banquetx
       @title = t('Update Dish')
       @menu = Banquetx::Menu.find_by_id(params[:id])
       @erb_code = find_config_const('menu_edit_view', 'banquetx')
-      @js_erb_code = find_config_const('menu_edit_js_view', 'banquetx')
+      #@js_erb_code = find_config_const('menu_edit_js_view', 'banquetx')
     end
   
     def update
